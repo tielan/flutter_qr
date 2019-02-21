@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.tielan.flutterqr">
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <application>
+        <activity
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:name=".QRScanActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"/>
+    </application>
+</manifest>
