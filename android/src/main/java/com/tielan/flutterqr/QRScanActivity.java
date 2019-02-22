@@ -24,11 +24,11 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 public class QRScanActivity extends Activity implements QRCodeView.Delegate{
 
     public static String EXTRA_RESULT = "extra_result";
+    public static String ANIM_KEY = "anim_key";
+
     private boolean qrRead;
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA_PHONE = 777;
-
-    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
     private static final String TAG = QRScanActivity.class.getSimpleName();
     ZXingView mZXingView;
 
@@ -67,7 +67,10 @@ public class QRScanActivity extends Activity implements QRCodeView.Delegate{
     //实现返回 无动画
     @Override
     protected void onPause() {
-        overridePendingTransition(0,0);
+        boolean anim = getIntent().getBooleanExtra(ANIM_KEY,false);
+        if(!anim){
+            overridePendingTransition(0,0);
+        }
         super.onPause();
     }
 

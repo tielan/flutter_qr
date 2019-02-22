@@ -57,16 +57,23 @@ public class FlutterQrPlugin implements MethodCallHandler, PluginRegistry.Activi
         }
         pendingResult = result;
         if (call.method.equals("readQRCode")) {
-            startView();
+            boolean anim = true;
+            if(call.hasArgument("anim")){
+                anim = (boolean)call.argument("anim");
+            }
+            startView(anim);
         } else {
             throw new IllegalArgumentException("Unknown method " + call.method);
         }
     }
 
-    private void startView() {
+    private void startView(boolean anim) {
         Intent intent = new Intent(activity, QRScanActivity.class);
+        intent.putExtra(QRScanActivity.ANIM_KEY,anim);
         activity.startActivityForResult(intent, REQUEST_CODE_SCAN_ACTIVITY);
-        activity.overridePendingTransition(0, 0);
+        if(!anim){
+            activity.overridePendingTransition(0, 0);
+        }
     }
 
     @Override
