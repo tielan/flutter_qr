@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:flutter_qr/flutter_qr.dart';
-
+import 'scan_scaffold.dart';
 
 void main() {
   runApp(new MyApp());
@@ -13,6 +12,11 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'QRCode Reader Demo',
       home: new MyHomePage(),
+       theme: ThemeData(
+        primaryColor: Colors.white,
+        dividerColor: Color(0xffeeeeee),
+        scaffoldBackgroundColor: Colors.white,
+      ),
     );
   }
 }
@@ -39,9 +43,8 @@ class _MyAppState extends State<MyHomePage> {
               })),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            _barcodeString = FlutterQr().scan();
-          });
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => ScanScaffoldPage()));
         },
         tooltip: 'Reader the QRCode',
         child: Icon(Icons.add_a_photo),
