@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,9 +37,23 @@ public class QRScanActivity extends Activity implements QRCodeView.Delegate{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTranslucentStatus();
         setContentView(R.layout.activity_qr_read);
         mZXingView = findViewById(R.id.zxingview);
         mZXingView.setDelegate(this);
+    }
+    protected void setTranslucentStatus() {
+        // 5.0以上系统状态栏透明
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     @Override
@@ -46,6 +63,12 @@ public class QRScanActivity extends Activity implements QRCodeView.Delegate{
             mZXingView.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
             mZXingView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
         }
+    }
+    //实现返回 无动画
+    @Override
+    protected void onPause() {
+        overridePendingTransition(0,0);
+        super.onPause();
     }
 
     @Override

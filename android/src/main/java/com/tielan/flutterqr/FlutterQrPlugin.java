@@ -57,7 +57,7 @@ public class FlutterQrPlugin implements MethodCallHandler, PluginRegistry.Activi
         }
         pendingResult = result;
         if (call.method.equals("readQRCode")) {
-                startView();
+            startView();
         } else {
             throw new IllegalArgumentException("Unknown method " + call.method);
         }
@@ -66,6 +66,7 @@ public class FlutterQrPlugin implements MethodCallHandler, PluginRegistry.Activi
     private void startView() {
         Intent intent = new Intent(activity, QRScanActivity.class);
         activity.startActivityForResult(intent, REQUEST_CODE_SCAN_ACTIVITY);
+        activity.overridePendingTransition(0, 0);
     }
 
     @Override
